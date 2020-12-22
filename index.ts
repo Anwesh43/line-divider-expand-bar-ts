@@ -214,4 +214,26 @@ class LineDivideExpand {
     startUpdating(cb : Function) {
         this.curr.startUpdating(cb)
     }
+} 
+
+class Renderer {
+
+    lde : LineDivideExpand = new LineDivideExpand()
+    animator : Animator = new Animator()
+    
+    render(context : CanvasRenderingContext2D) {
+        this.lde.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.lde.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.lde.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
 }
